@@ -10,6 +10,8 @@ import bridge.view.OutputView;
 
 import java.util.List;
 
+import static bridge.domain.UserGameCommand.QUIT;
+
 public class BridgeGameController {
 
     private final InputView inputView;
@@ -32,6 +34,10 @@ public class BridgeGameController {
 
         while (!bridgeGame.isGoal()) {
             goForward();
+            if (!bridgeGame.isFail()) {
+                failGame();
+                break;
+            }
         }
     }
 
@@ -53,13 +59,15 @@ public class BridgeGameController {
         String move = inputView.readMoving();
         boolean checkStep =  bridgeGame.move(move);
         outputView.printMap(bridgeGame.getPlayBridge(), checkStep);
-        if (!checkStep) {
-            failGame();
-        }
     }
 
     private void failGame() {
-        Printer.print();
+        Printer.print(String.format(GameMessage.GAME_RESULT.getMessage(),"실패"));
+        String command = inputView.readGameCommand();
+        if (command.equals(QUIT.getCommand())) {
+            Printer.print(GameMessage.GAME_END.getMessage());
+        }
+        initGame();
     }
 
 }
