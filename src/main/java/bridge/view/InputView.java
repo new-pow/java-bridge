@@ -65,8 +65,9 @@ public class InputView {
 
     private void isValidMove(String input) {
         List<String> rightCommands = UserMoveCommand.getCommads();
+
         if (!rightCommands.contains(input)) {
-            throw new IllegalArgumentException(NOT_VAILD_MOVE_COMMAND.getMessage(rightCommands));
+            throw new IllegalArgumentException(NOT_VAILD_COMMAND.getMessage(rightCommands));
         }
     }
 
@@ -74,7 +75,27 @@ public class InputView {
      * 사용자가 게임을 다시 시도할지 종료할지 여부를 입력받는다.
      */
     public String readGameCommand() {
-        return null;
+        Printer.print(ASK_GAME_COMMAND.getMessage());
+        return getGameCommand();
+    }
+
+    private String getGameCommand() {
+        try {
+            String input = readLine();
+            isValidGameCommand(input);
+            return input;
+        } catch (IllegalArgumentException e) {
+            Printer.print(e.getMessage());
+            return readGameCommand();
+        }
+    }
+
+    private void isValidGameCommand(String input) {
+        List<String> rightCommands = UserGameCommand.getCommads();
+
+        if (!rightCommands.contains(input)) {
+            throw new IllegalArgumentException(NOT_VAILD_COMMAND.getMessage(rightCommands));
+        }
     }
 
 
