@@ -1,10 +1,15 @@
 package bridge.view;
 
+import bridge.domain.UserGameCommand;
+import bridge.domain.UserMoveCommand;
 import bridge.exception.Exception;
 import bridge.util.Printer;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
+import static bridge.exception.Exception.*;
+import static bridge.view.GameMessage.*;
 import static camp.nextstep.edu.missionutils.Console.readLine;
 
 /**
@@ -35,7 +40,7 @@ public class InputView {
 
     private void isVaildNumberFormat(String s) {
         if (!s.matches(INT_PATTERN)) {
-            throw new IllegalArgumentException(Exception.NOT_NUMBER.getMessage());
+            throw new IllegalArgumentException(NOT_NUMBER.getMessage());
         }
     }
 
@@ -43,7 +48,26 @@ public class InputView {
      * 사용자가 이동할 칸을 입력받는다.
      */
     public String readMoving() {
-        return null;
+        Printer.print(ASK_MOVE_COMMAND.getMessage());
+        return getMoveCommand();
+    }
+
+    private String getMoveCommand() {
+        try {
+            String input = readLine();
+            isValidMove(input);
+            return input;
+        } catch (IllegalArgumentException e) {
+            Printer.print(e.getMessage());
+            return readMoving();
+        }
+    }
+
+    private void isValidMove(String input) {
+        List<String> rightCommands = UserMoveCommand.getCommads();
+        if (!rightCommands.contains(input)) {
+            throw new IllegalArgumentException(NOT_VAILD_MOVE_COMMAND.getMessage(rightCommands));
+        }
     }
 
     /**
