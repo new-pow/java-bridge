@@ -1,24 +1,36 @@
 package bridge.view;
 
 import java.util.Arrays;
-import java.util.List;
 
 public enum BridgePrinter {
 
     PASS("O",true),
-    FAIL("X", false);
+    FAIL("X", false),
+    NULL(" ", null);
 
     private String symbol;
-    private boolean check;
-    private static final String BLOCK = "[ %s ]";
-    private static final String SEPARATOR = "|";
+    private Boolean check;
+    private static final String START = "[";
+    private static final String BLOCK = " %s |";
+    private static final String END = "]";
 
-    BridgePrinter(String symbol, boolean check) {
+    BridgePrinter(String symbol, Boolean check) {
         this.symbol = symbol;
         this.check = check;
     }
 
-    public static String getBridgeBlock (boolean check) {
+    public static String getStart() {
+        return START;
+    }
+    public static String getEnd() {
+        return END;
+    }
+
+    public String getBridgeBlock () {
+        return String.format(BLOCK, symbol);
+    }
+
+    public static String getBridgeBlock (Boolean check) {
         BridgePrinter block = Arrays.stream(values())
                                     .filter(v -> v.check == check)
                                     .findFirst().get();
