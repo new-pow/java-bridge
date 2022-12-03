@@ -26,7 +26,7 @@ class BridgeGameControllerTest {
 
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
-        assertThatThrownBy(() -> bridgeGameController.initGame())
+        assertThatThrownBy(() -> bridgeGameController.startGame())
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(Exception.NOT_NUMBER.getMessage());
     }
