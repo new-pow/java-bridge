@@ -28,8 +28,17 @@ class BridgeMakerTest {
    }
 
     @Test
-    public void 다리생성_기능_0입력시() {
+    public void 다리생성_기능_최소범위미만() {
         int testSize = 0;
+
+        assertThatThrownBy(() -> bm.makeBridge(testSize))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(Exception.NOT_VAILD_SIZE.getMessage());
+    }
+
+    @Test
+    public void 다리생성_기능_최대범위초과() {
+        int testSize = 21;
 
         assertThatThrownBy(() -> bm.makeBridge(testSize))
                 .isInstanceOf(IllegalArgumentException.class)
